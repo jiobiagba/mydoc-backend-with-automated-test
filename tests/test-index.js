@@ -9,19 +9,12 @@ function allTests() {
     //Provision for saving id and timestamps
     let id
     let timeSaver
-    let timeValue = () => {
-        var now = new Date(),
-            timestamp = now.getTime()
-        console.log('Timestamp: ', timestamp)
-        return timestamp
-    }
+    let keyHolder
 
     it('posts object key and value', (done) => {
         superagent.post('http://localhost:4040/api/v1/object')
             .send({
-                key: 'drug-name',
-                value: 'Paracetamol',
-                timestamp: timeValue()
+                "drug-name": "Paracetamol", 
             })
             .end((err, res) => {
                 expect(err).toBe(null)
@@ -30,7 +23,19 @@ function allTests() {
                 timeSaver = res.body[0].timestamp
                 console.log('Timesaver: ', timeSaver)
                 id = res.body[0]._id
+                console.log('Id: ', id)
+                keyHolder = Object.keys(res.body[0])[0] //This saves the key here which is 'title'
+                console.log('Mykey: ', keyHolder)
                 done()
             })
     })
+
+    // it('gets latest value when no timestamp is given', (done) => {
+    //     superagent.get('http://localhost:4040/api/v1/object' + keyHolder)
+    //         .end((err, res) => {
+    //             expect(err).toBe(null)
+    //             expect(typeof res.body).toBe('object')
+    //             expect()
+    //         })
+    // })
 }
