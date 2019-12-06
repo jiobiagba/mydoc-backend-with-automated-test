@@ -8,7 +8,13 @@ Once tests are up and running, Mongoose will be used for Schema functionality an
 */
 const monk = require('monk'),
     url = 'mongodb://127.0.0.1:27017/mydoc',
-    db = monk(url)
+    db = monk(url),
+    timeValue = () => {
+        var now = new Date(),
+            timestamp = now.getTime()
+        console.log('Timestamp: ', timestamp)
+        return timestamp
+    }
 
 const app = express()
 
@@ -26,7 +32,16 @@ app.param('object', (req, res, next, object) => {
 app.post('/api/v1/:object', async (req, res, next) => {
     try {
         console.log('Incoming data: ', req.body)
-        const feedback = await req.collection.insert([req.body])
+        const data = {
+            key: Object.keys(req.body)[0],
+            value: Object.values(req.body)[0],
+            timestamp: timeValue()
+        }
+
+        console.log('Data to post: ', data)
+
+        const feedback = await req.collection.insert([data])
+        console.log('Feedback: ', feedback)
 
         res.status(200).send(feedback)
     }
