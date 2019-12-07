@@ -10,21 +10,23 @@ function allTests() {
     let id
     let timeSaver
     let keyHolder
+    const testData = {
+        "drug-name": "Paracetamol", 
+    }
 
     it('posts object key and value', (done) => {
         superagent.post('http://localhost:4040/api/v1/object')
-            .send({
-                "drug-name": "Paracetamol", 
-            })
+            .send(testData)
             .end((err, res) => {
                 expect(err).toBe(null)
-                expect(res.body.length).toBe(1)
-                expect(res.body[0]._id.length).toBe(24)
-                timeSaver = res.body[0].timestamp
-                console.log('Timesaver: ', timeSaver)
-                id = res.body[0]._id
-                console.log('Id: ', id)
-                keyHolder = Object.keys(res.body[0])[0] //This saves the key here which is 'title'
+                expect(typeof res.body).toBe('object')
+                expect(res.body._id.length).toBe(24)
+                expect(res.body.key).toBe(Object.keys(testData)[0])
+                expect(res.body.value).toBe(Object.values(testData)[0])
+                expect(res.body.timestamp).not.toBe(null)
+                timeSaver = res.body.timestamp
+                id = res.body._id
+                keyHolder = res.body.key //This saves the key here which is 'title'
                 console.log('Mykey: ', keyHolder)
                 done()
             })
