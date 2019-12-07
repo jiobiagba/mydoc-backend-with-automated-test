@@ -14,16 +14,20 @@ exports.postOne = async (req, res, next) => {
             timestamp: timeValue()
         }
 
-        const check = await req.collection.findOne({ key: data.key })
+        //First attempt an update
+        const check = await req.collection.update({ key: data.key }, { $set: { value: data.value } })
         console.log('Present or Not? :' , check)
-        if(check) {
-            check.value = Object.values(req.body)[0]
-            console.log('Updated Check: ', check)
-            const updated = await req.collection.updateOne([check])
-            res.status(200).json(updated[0])
+        if(check.n !== 0 || check.nModified !== 0) {
+            const updated = await req.collection.findOne({ key: data.key }, { sort: [['timestamp', -1]] })
+            console.log('Updated: ', updated)
+            res.status(200).json(updated)
+            return
         } else {
+            //Failed update? Insert new data and send it as response
             const feedback = await req.collection.insert([data])
+            console.log('Feedback: ', feedback)
             res.status(200).json(feedback[0])
+            return
         }
     }
 
