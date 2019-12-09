@@ -4,18 +4,22 @@ const http= require('http'),
         express = require('express'),
         router = require('./routes/router'),
         routerTimestamp = require('./routes/router-timestamp'),
-        mongoose = require('mongoose')
+        mongoose = require('mongoose'),
+        url = process.env.MONGO_TEST_URI, //For MongoDB Atlas
+        localURL = 'mongodb://localhost/mydoc' //For Local MongoDB
 
         //Mongoose setup
-        mongoose.connect('mongodb://localhost/mydoc',  {
+        mongoose.connect(url,  {
             useNewUrlParser: true,
             useUnifiedTopology: true
         })
 
         const db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'Error in Connection: '))
         db.once('open', () => {
             console.log('Connection to database established!')
+        }).catch((err) => {
+            console.error('Error in opening database: ', err)
+            process.exit(1)
         })
 
 const app = express()
