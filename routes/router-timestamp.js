@@ -1,6 +1,6 @@
 const express = require('express'),
     router = express.Router(),
-    controller = require('../controller/controller')
+    controllerTimestamp = require('../controller/controller-timestamp')
 
 
 /* Monk will be used to quickly set up APIs by aiding quick and schemaless connection to MongoDB
@@ -18,9 +18,6 @@ router.param('object', (req, res, next, object) => {
     return next() 
 })
 
-//Route for posting
-router.post('/api/v1/:object', controller.postOne)
-//Route for getting value without timestamp
-router.get('/api/v1/:object/:mykey', controller.getOne)
+router.get('/api/v1/:object/:mykey/:timestamp', controllerTimestamp.getOneWithTimestamp)
 
 module.exports = router

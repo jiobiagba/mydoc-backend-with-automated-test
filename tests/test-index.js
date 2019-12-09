@@ -8,7 +8,18 @@ describe('tests for http apis for mydoc challenge', allTests)
 function allTests() {
     //Variables for aiding test    
     let firstTime, secondTime, thirdTime, myKey
-    const testData1 = { "drug": "Aspirin" }, testData2 = { "drug": "Procold" }
+    const testData1 = { "drug": "B - complex" }, 
+            testData2 = { "drug": "Vitamin C" }
+
+    const sendTest = () => {
+        console.log('After delay: ', testData2)
+        return testData2
+    }
+
+    const waiter = (ms) => {
+        const end = Date.now() + ms
+        while (Date.now() < end) continue
+    }
 
     /**Different test scenarios below
      * POST and GET are colled more than once to properly check if updated data and timestamped requests are handled correctly
@@ -17,6 +28,7 @@ function allTests() {
         superagent.post('http://localhost:4040/api/v1/object')
             .send(testData1)
             .end((err, res) => {
+                console.log('Response: ', res.body)
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
                 expect(res.body._id.length).toBe(24)
@@ -24,6 +36,7 @@ function allTests() {
                 expect(res.body.value).toBe(Object.values(testData1)[0])
                 expect(res.body.timestamp).not.toBe(null)
                 firstTime = res.body.timestamp
+                console.log('First Time: ', firstTime)
                 myKey = Object.keys(testData1)[0]
                 done()
             })
@@ -43,20 +56,20 @@ function allTests() {
     })
 
     it('posts another object - same key different value', (done) => {
-        superagent.post('http://localhost:4040/api/v1/object')
-            .send(setTimeout(() => {
-                return testData2
-            }, 1500))
-            .end((err, res) => {
-                expect(err).toBe(null)
-                expect(typeof res.body).toBe('object')
-                expect(res.body._id.length).toBe(24)
-                expect(res.body.key).toBe(Object.keys(testData1)[0])
-                expect(res.body.value).toBe(Object.values(testData2)[0])
-                expect(res.body.timestamp).not.toBe(null)
-                expect(res.body.timestamp).toBeGreaterThan(firstTime)
-                secondTime = res.body.timestamp
-                done()
+            waiter(1200)
+            superagent.post('http://localhost:4040/api/v1/object')
+                .send(testData2)
+                .end((err, res) => {
+                    expect(err).toBe(null)
+                    expect(typeof res.body).toBe('object')
+                    expect(res.body._id.length).toBe(24)
+                    expect(res.body.key).toBe(Object.keys(testData1)[0])
+                    expect(res.body.value).toBe(Object.values(testData2)[0])
+                    expect(res.body.timestamp).not.toBe(null)
+                    expect(res.body.timestamp).toBeGreaterThan(firstTime)
+                    secondTime = res.body.timestamp
+                    console.log('Second Time: ', secondTime)
+                    done()
             })
     })
 
@@ -76,13 +89,14 @@ function allTests() {
     it('gets value immediately less than or equal to given timestamp', (done) => {
         //thirdTime was done here to ensure firstTime and secondTime have both been gotten
         thirdTime = Math.round(firstTime + ((secondTime - firstTime) / 2))
-        superagent.get('http://localhost:4040/api/v1/object/' + myKey + '?timestamp=' + thirdTime)
+        console.log('Third Time: ', thirdTime)
+        superagent.get('http://localhost:4040/timestamp/api/v1/object/' + myKey + '/' + thirdTime)
             .end((err, res) => {
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
                 expect(res.body.key).toBe(Object.keys(testData1)[0])
                 expect(res.body.value).toBe(Object.values(testData1)[0])
-                expect(res.body.timestamp).toBeGreaterThan(firstTime)
+                expect(res.body.timestamp).toBeGreaterThanOrEqual(firstTime)
                 expect(res.body.timestamp).toBeLessThanOrEqual(secondTime)
                 done()
             })
