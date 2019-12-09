@@ -3,7 +3,20 @@ const http= require('http'),
         port = process.env.PORT || 4040,
         express = require('express'),
         router = require('./routes/router'),
-        routerTimestamp = require('./routes/router-timestamp')
+        routerTimestamp = require('./routes/router-timestamp'),
+        mongoose = require('mongoose')
+
+        //Mongoose setup
+        mongoose.connect('mongodb://localhost/mydoc',  {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+
+        const db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'Error in Connection: '))
+        db.once('open', () => {
+            console.log('Connection to database established!')
+        })
 
 const app = express()
 

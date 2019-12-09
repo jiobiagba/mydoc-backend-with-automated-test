@@ -8,14 +8,10 @@ describe('tests for http apis for mydoc challenge', allTests)
 function allTests() {
     //Variables for aiding test    
     let firstTime, secondTime, thirdTime, myKey
-    const testData1 = { "drug": "B - complex" }, 
-            testData2 = { "drug": "Vitamin C" }
+    const testData1 = { "ailment": "Headache" }, 
+            testData2 = { "ailment": "Back Pain" }
 
-    const sendTest = () => {
-        console.log('After delay: ', testData2)
-        return testData2
-    }
-
+    //Synchronous delay function to be used in place of setTimeOut
     const waiter = (ms) => {
         const end = Date.now() + ms
         while (Date.now() < end) continue
@@ -31,7 +27,6 @@ function allTests() {
                 console.log('Response: ', res.body)
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
-                expect(res.body._id.length).toBe(24)
                 expect(res.body.key).toBe(Object.keys(testData1)[0])
                 expect(res.body.value).toBe(Object.values(testData1)[0])
                 expect(res.body.timestamp).not.toBe(null)
@@ -56,7 +51,9 @@ function allTests() {
     })
 
     it('posts another object - same key different value', (done) => {
+            //2nd POST request is delayed for 1.2 seconds
             waiter(1200)
+            //POST is executed
             superagent.post('http://localhost:4040/api/v1/object')
                 .send(testData2)
                 .end((err, res) => {
