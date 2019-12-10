@@ -1,9 +1,26 @@
-const superagent = require('superagent')
-const expect = require('expect')
-const port = process.env.PORT || 4040
+const superagent = require('superagent'),
+        expect = require('expect'),
+        port = process.env.PORT || 4040,
+        starter = require('../index').starter,
+        ender = require('../index').shutdown,
+        mongoose = require('mongoose'),
+        url = process.env.MONGO_TEST_URI //For MongoDB Atlas
 
+
+//Synchronous delay function to be used in place of setTimeOut
+const waiter = (ms) => {
+    const end = Date.now() + ms
+    while (Date.now() < end) continue
+}
+
+describe('start server', function() {
+    it.skip('should start server', async function() {
+        await starter()
+    })
+})
 //Describing how the apis should behave
 describe('tests for http apis for mydoc challenge', allTests)
+
 
 //Function which has all tests in it
 function allTests() {
@@ -11,12 +28,6 @@ function allTests() {
     let firstTime, secondTime, thirdTime, myKey
     const testData1 = { "ailment": "Headache" }, 
             testData2 = { "ailment": "Back Pain" }
-
-    //Synchronous delay function to be used in place of setTimeOut
-    const waiter = (ms) => {
-        const end = Date.now() + ms
-        while (Date.now() < end) continue
-    }
 
     /**Different test scenarios below
      * POST and GET are colled more than once to properly check if updated data and timestamped requests are handled correctly
@@ -98,5 +109,9 @@ function allTests() {
                 expect(res.body.timestamp).toBeLessThanOrEqual(secondTime)
                 done()
             })
+    })
+
+    after(() => {
+        ender()
     })
 }

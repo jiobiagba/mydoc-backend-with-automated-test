@@ -8,24 +8,8 @@ const http= require('http'),
         router = require('./routes/router'),
         routerTimestamp = require('./routes/router-timestamp'),
         mongoose = require('mongoose'),
-        url = process.env.MONGO_TEST_URI, //For MongoDB Atlas
         localURL = 'mongodb://localhost/mydoc' //For Local MongoDB
 
-        //Mongoose setup
-        mongoose.connect(url,  {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-
-
-        //DataBase Connection
-        const db = mongoose.connection;
-        db.on('error', console.error.bind(console, 'Error in connection: '))
-        db.once('open', () => {
-            console.log('Connection to database established!')
-        }).catch((err) => {
-            console.error('Error in opening database: ', err)
-        })
 
 const app = express()
 
@@ -42,6 +26,35 @@ app.use('/', router)
 app.use('/timestamp', routerTimestamp)
 
 const server = http.createServer(app)
-server.listen(port, () => {
-    console.info(`Server running on port ${port}`)
-})
+
+const starter = async () => {
+
+            const url = process.env.MONGO_TEST_URI //For MongoDB Atlas
+            //Mongoose setup
+            mongoose.connect(url,  {
+                useNewUrlParser: true,
+                useUnifiedTopology: true
+            }) 
+            
+            const db = mongoose.connection
+            db.on('error', console.error.bind(console, 'Error in database connection: '))
+            db.once('open', () =>{
+                console.log('Connection to database established!')
+                server.listen(port, () => {
+                console.info(`Server running on port ${port}`)
+                })
+            }) 
+        }
+
+const shutdown = () => {
+    server.close
+}
+
+if (require.main === module) {
+    starter().catch((err) => {
+        console.error('Error encountered while starting app: ', err)
+    })
+} else {
+    exports.starter = starter
+    exports.shutdown = shutdown
+}
