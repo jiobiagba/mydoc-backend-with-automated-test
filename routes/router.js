@@ -5,6 +5,10 @@ const express = require('express'),
 
 //Monk has been changed to Mongoose
 
+router.get('/', (req, res, next) => {
+    res.render('index')
+})
+
 //Route for posting
 router.post('/api/v1/:object', controller.postOne)
 //Route for getting value without timestamp
