@@ -1,5 +1,6 @@
 const superagent = require('superagent')
 const expect = require('expect')
+const port = process.env.PORT || 4040
 
 //Describing how the apis should behave
 describe('tests for http apis for mydoc challenge', allTests)
@@ -21,7 +22,7 @@ function allTests() {
      * POST and GET are colled more than once to properly check if updated data and timestamped requests are handled correctly
      */
     it('posts object key and value', (done) => {
-        superagent.post('http://localhost:4040/api/v1/object')
+        superagent.post('http://localhost:' + port + '/api/v1/object')
             .send(testData1)
             .end((err, res) => {
                 console.log('Response: ', res.body)
@@ -39,7 +40,7 @@ function allTests() {
 
     it('gets latest value when no timestamp is given', (done) => {
         //Check here is to ensure key matches initial key and value change and timestamp matches when testData1 was posted
-        superagent.get('http://localhost:4040/api/v1/object/' + myKey)
+        superagent.get('http://localhost:' + port + '/api/v1/object/' + myKey)
             .end((err, res) => {
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
@@ -54,7 +55,7 @@ function allTests() {
             //2nd POST request is delayed for 1.2 seconds
             waiter(1200)
             //POST is executed
-            superagent.post('http://localhost:4040/api/v1/object')
+            superagent.post('http://localhost:' + port + '/api/v1/object')
                 .send(testData2)
                 .end((err, res) => {
                     expect(err).toBe(null)
@@ -71,7 +72,7 @@ function allTests() {
     })
 
     it('gets latest value again when no timestamp is given', (done) => {
-        superagent.get('http://localhost:4040/api/v1/object/' + myKey)
+        superagent.get('http://localhost:' + port + '/api/v1/object/' + myKey)
             .end((err, res) => {
                 //Check here is to ensure key matches initial key but value change correctly registered, and timestamp appropriately updated
                 expect(err).toBe(null)
@@ -87,7 +88,7 @@ function allTests() {
         //thirdTime was done here to ensure firstTime and secondTime have both been gotten
         thirdTime = Math.round(firstTime + ((secondTime - firstTime) / 2))
         console.log('Third Time: ', thirdTime)
-        superagent.get('http://localhost:4040/timestamp/api/v1/object/' + myKey + '/' + thirdTime)
+        superagent.get('http://localhost:' + port + '/timestamp/api/v1/object/' + myKey + '/' + thirdTime)
             .end((err, res) => {
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
