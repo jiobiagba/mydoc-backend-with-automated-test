@@ -20,11 +20,11 @@ const http= require('http'),
 
         //DataBase Connection
         const db = mongoose.connection;
+        db.on('error', console.error.bind(console, 'Error in connection: '))
         db.once('open', () => {
             console.log('Connection to database established!')
         }).catch((err) => {
             console.error('Error in opening database: ', err)
-            process.exit(1)
         })
 
 const app = express()
