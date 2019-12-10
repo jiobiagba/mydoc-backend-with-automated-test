@@ -31,7 +31,7 @@ const starter = async () => {
 
             const url = process.env.MONGO_TEST_URI //For MongoDB Atlas
             //Mongoose setup
-            mongoose.connect(url,  {
+            mongoose.connect(localURL,  {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             }) 
