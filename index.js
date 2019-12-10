@@ -17,6 +17,8 @@ const http= require('http'),
             useUnifiedTopology: true
         })
 
+
+        //DataBase Connection
         const db = mongoose.connection;
         db.once('open', () => {
             console.log('Connection to database established!')
