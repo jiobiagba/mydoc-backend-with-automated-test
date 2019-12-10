@@ -1,6 +1,9 @@
 {
   "name": "http-apis-by-joseph",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.15.3"
+  },
   "description": "My solution to mydoc's nodejs backend challenge",
   "main": "index.js",
   "directories": {
@@ -23,7 +26,9 @@
   },
   "homepage": "https://github.com/jiobiagba/mydoc-nodeBackendChallenge-joseph#readme",
   "dependencies": {
+    "compression": "^1.7.4",
     "express": "^4.17.1",
+    "helmet": "^3.21.2",
     "jade": "^1.11.0",
     "mongoose": "^5.7.14",
     "monk": "^7.1.1",

@@ -1,7 +1,10 @@
 
 const http= require('http'),
         port = process.env.PORT || 4040,
+        path = require('path'),
         express = require('express'),
+        compression = require('compression'),
+        helmet = require('helmet'),
         router = require('./routes/router'),
         routerTimestamp = require('./routes/router-timestamp'),
         mongoose = require('mongoose'),
@@ -30,6 +33,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.json())
 app.use(express.urlencoded( { extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(compression())
+app.use(helmet())
 
 app.use('/', router)
 app.use('/timestamp', routerTimestamp)
