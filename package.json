@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "mocha test-index.js --reporter",
+    "test": "mocha test-index.js --reporter spec",
     "devstart": "nodemon index.js",
     "start": "node index.js"
   },
