@@ -31,7 +31,7 @@ const server = http.createServer(app)
 const starter = async () => {
             const url = process.env.MONGO_TEST_URI
 
-            mongoose.connect(localURL,  {
+            mongoose.connect(url,  {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             }) 
