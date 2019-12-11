@@ -1,5 +1,6 @@
 const superagent = require('superagent'),
         expect = require('expect'),
+        debug = require('debug')('tester'),
         port = process.env.PORT || 4040,
         starter = require('../index').starter,
         ender = require('../index').shutdown,
@@ -15,14 +16,13 @@ const waiter = (ms) => {
 }
 
 beforeEach(function() {
-    console.log('Mongo URL: ', url)
     mongoose.connect(url, {
         useNewUrlParser: true,
         useUnifiedTopology: true 
     }) 
     
     const db = mongoose.connection
-    db.on('error', console.error.bind(console, 'Error in database connection: '))
+    db.on('error', console.error.bind(debug, 'Error in database connection: '))
 })
 
 describe('start server', function() {
@@ -48,14 +48,12 @@ function allTests() {
         superagent.post('http://localhost:' + port + '/api/v1/object')
             .send(testData1)
             .end((err, res) => {
-                console.log('Response: ', res.body)
                 expect(err).toBe(null)
                 expect(typeof res.body).toBe('object')
                 expect(res.body.key).toBe(Object.keys(testData1)[0])
                 expect(res.body.value).toBe(Object.values(testData1)[0])
                 expect(res.body.timestamp).not.toBe(null)
                 firstTime = res.body.timestamp
-                console.log('First Time: ', firstTime)
                 myKey = Object.keys(testData1)[0]
                 done()
             })
@@ -89,7 +87,6 @@ function allTests() {
                     expect(res.body.timestamp).not.toBe(null)
                     expect(res.body.timestamp).toBeGreaterThan(firstTime)
                     secondTime = res.body.timestamp
-                    console.log('Second Time: ', secondTime)
                     done()
             })
     })
@@ -110,7 +107,6 @@ function allTests() {
     it('gets value immediately less than or equal to given timestamp', (done) => {
         //thirdTime was done here to ensure firstTime and secondTime have both been gotten
         thirdTime = Math.round(firstTime + ((secondTime - firstTime) / 2))
-        console.log('Third Time: ', thirdTime)
         superagent.get('http://localhost:' + port + '/timestamp/api/v1/object/' + myKey + '/' + thirdTime)
             .end((err, res) => {
                 expect(err).toBe(null)

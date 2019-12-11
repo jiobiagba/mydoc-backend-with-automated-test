@@ -4,6 +4,7 @@ const http= require('http'),
         path = require('path'),
         express = require('express'),
         compression = require('compression'),
+        debug = require('debug')('starter'),
         helmet = require('helmet'),
         router = require('./routes/router'),
         routerTimestamp = require('./routes/router-timestamp'),
@@ -28,39 +29,34 @@ app.use('/timestamp', routerTimestamp)
 const server = http.createServer(app)
 
 const starter = async () => {
+            const url = process.env.MONGO_TEST_URI
 
-            const url = process.env.MONGO_TEST_URI //For MongoDB Atlas
-            //Mongoose setup
             mongoose.connect(localURL,  {
                 useNewUrlParser: true,
                 useUnifiedTopology: true
             }) 
             
             const db = mongoose.connection
-            db.on('error', console.error.bind(console, 'Error in database connection: '))
+
+            db.on('error', console.error.bind(debug, 'Error in database connection: '))
             db.once('open', () =>{
-                console.log('Connection to database established!')
+                debug('Connection to database established!')
                 server.listen(port, () => {
-                console.info(`Server running on port ${port}`)
+                debug(`Server running on port ${port}`)
                 })
             }) 
         }
 
 const power = () => {
     server.listen(port, () => {
-    console.info(`Server running on port ${port}`)
+    debug(`Server running on port ${port}`)
     })
-}
-
-const shutdown = () => {
-    server.close()
 }
 
 if (require.main === module) {
     starter().catch((err) => {
-        console.error('Error encountered while starting app: ', err)
+        debug('Error encountered while starting app: ', err)
     })
 } else {
     exports.starter = power
-    exports.shutdown = shutdown
 }

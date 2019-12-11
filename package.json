@@ -27,6 +27,7 @@
   "homepage": "https://github.com/jiobiagba/mydoc-nodeBackendChallenge-joseph#readme",
   "dependencies": {
     "compression": "^1.7.4",
+    "debug": "^4.1.1",
     "express": "^4.17.1",
     "express-validator": "^6.3.0",
     "helmet": "^3.21.2",
