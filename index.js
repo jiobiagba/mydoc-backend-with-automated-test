@@ -46,8 +46,14 @@ const starter = async () => {
             }) 
         }
 
+const power = () => {
+    server.listen(port, () => {
+    console.info(`Server running on port ${port}`)
+    })
+}
+
 const shutdown = () => {
-    server.close
+    server.close()
 }
 
 if (require.main === module) {
@@ -55,6 +61,6 @@ if (require.main === module) {
         console.error('Error encountered while starting app: ', err)
     })
 } else {
-    exports.starter = starter
+    exports.starter = power
     exports.shutdown = shutdown
 }

@@ -4,7 +4,8 @@ const superagent = require('superagent'),
         starter = require('../index').starter,
         ender = require('../index').shutdown,
         mongoose = require('mongoose'),
-        url = process.env.MONGO_TEST_URI //For MongoDB Atlas
+        url = process.env.MONGO_TEST_URI, //For MongoDB Atlas
+        localURL = 'mongodb://localhost/mydoc' //For Local MongoDB
 
 
 //Synchronous delay function to be used in place of setTimeOut
@@ -13,9 +14,19 @@ const waiter = (ms) => {
     while (Date.now() < end) continue
 }
 
+beforeEach(function() {
+    mongoose.connect(url, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true 
+    }) 
+    
+    const db = mongoose.connection
+    db.on('error', console.error.bind(console, 'Error in database connection: '))
+})
+
 describe('start server', function() {
-    it.skip('should start server', async function() {
-        await starter()
+    it('should start server', async function() {
+       starter()
     })
 })
 //Describing how the apis should behave
@@ -27,7 +38,7 @@ function allTests() {
     //Variables for aiding test    
     let firstTime, secondTime, thirdTime, myKey
     const testData1 = { "ailment": "Headache" }, 
-            testData2 = { "ailment": "Back Pain" }
+            testData2 = { "ailment": "BackPain" }
 
     /**Different test scenarios below
      * POST and GET are colled more than once to properly check if updated data and timestamped requests are handled correctly
@@ -111,7 +122,7 @@ function allTests() {
             })
     })
 
-    after(() => {
+    after(function () {
         ender()
     })
 }
