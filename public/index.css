@@ -1,0 +1,123 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    margin: 0px;
+    padding: 0px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+section, header, footer, div, span, h2, h3, h4,h5, h6, p, a {
+    margin: 0px;
+    padding: 0px;
+}
+
+section {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #FFFFEE;
+    overflow-y: scroll;
+}
+
+header, footer {
+    width: 100%;
+    flex-basis: 11.2%;
+    background: #5149CA;
+}
+
+footer {
+    padding-top: 14px;
+    padding-left: 21px;
+    align-self: flex-end;
+}
+
+h4 {
+    color: #FFFFEE;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+h5, a.footer {
+    color: #FFFFEE;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: normal;
+}
+
+header {
+    padding-top: 19px;
+    padding-left: 21px;
+    
+}
+
+h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #090908;
+}
+
+article {
+    flex-basis: 77.6%;
+    padding-top: 21px;
+    padding-left: 21px;
+}
+
+p {
+    font-size: 1.2rem;
+    font-weight: lighter;
+    color: #707070;
+}
+
+p.second {
+    padding-top: 10px;
+    padding-right: 8px;
+}
+
+h2.mid {
+    padding-top: 17px;
+}
+
+h6 {
+    color: #5149CA;
+    font-size: 1.5rem;
+    font-style: italic;
+    font-weight: normal;
+}
+
+p.api, a {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: #707070;
+}
+
+h6.second {
+    padding-top: 27px;
+}
+
+h2.bottom {
+    padding-top: 27px;
+}
+
+h6.scnd {
+    padding-top: 7px;
+}
+
+footer p {
+    color: #FFFFEE;
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+a.footer {
+    padding-top: 12px;
+}
