@@ -7,17 +7,22 @@ exports.getOneWithTimestamp = async (req, res, next) => {
                 key = req.params.mykey
 
         const result = await InfoModel.find({ key: key }).sort({timestamp: -1})
+        if(result === null || result === undefined) {
+            res.status(404).json({
+                msg: 'Key not found in store'
+            })
+        }
+
         const finalResult = result.find((item, index, array) => {
             return item.timestamp <= time
         })
-
         if(finalResult === undefined || finalResult === null) {
             res.status(404).json({
                 msg: 'No record of this key being saved before this time.'
             })
             return
         }
-        
+
         res.status(200).json(finalResult)
         return next()
     }
