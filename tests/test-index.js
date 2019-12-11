@@ -124,6 +124,6 @@ function allTests() {
     })
 
     after(function () {
-        ender()
+        process.exit(0)
     })
 }
