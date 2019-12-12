@@ -67,7 +67,7 @@ h2 {
 
 article {
     flex-basis: 77.6%;
-    padding-top: 21px;
+    padding-top: 14px;
     padding-left: 21px;
 }
 
@@ -83,7 +83,7 @@ p.second {
 }
 
 h2.mid {
-    padding-top: 17px;
+    padding-top: 14px;
 }
 
 h6 {
@@ -100,15 +100,15 @@ p.api, a {
 }
 
 h6.second {
-    padding-top: 27px;
+    padding-top: 15px;
 }
 
 h2.bottom {
-    padding-top: 27px;
+    padding-top: 14px;
 }
 
 h6.scnd {
-    padding-top: 7px;
+    padding-top: 10px;
 }
 
 footer p {
@@ -120,4 +120,109 @@ footer p {
 
 a.footer {
     padding-top: 12px;
+}
+
+
+@media screen and (max-width: 374px) {
+    section {
+        height: 150vh;
+    }
+}
+
+@media screen and (max-height: 667px) {
+    section {
+        height: 150vh;
+    }
+}
+
+@media screen and (min-width: 499px) and (max-width: 999px) {
+    article {
+        padding-right: 21px;
+    }
+
+    h2.top, h2.mid, h2.bottom {
+        padding-top: 20px;
+        font-size: 4rem;
+    }
+
+    h2.mid, h2.bottom {
+        padding-top: 35px;
+    }
+
+    h4 {
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 1.3rem;
+    }
+
+    p.api {
+        font-size: 1rem;
+    }
+
+    footer {
+        padding-top: 25px;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    header {
+        flex-basis: 35%;
+        padding: 65px 20px 1px;
+    }
+
+    footer {
+        flex-basis: 15%;
+    }
+
+    article {
+        flex-basis: 50%;
+        display: flex;
+        justify-content: space-between;
+        padding-top: 30px;
+    }
+
+    .topper, .middler, .bottomer {
+        flex-basis: 30%;
+    }
+
+    h2.top, h2.mid, h2.bottom {
+        padding-top: 15px;
+        font-size: 3.5rem;
+    }
+
+    h4 {
+        font-size: 9rem;
+    }
+
+    h5 {
+        font-size: 5rem;
+    }
+
+    p {
+        font-size: 1.6rem;
+        padding-top: 20px;
+    }
+
+    p.second {
+        padding-top: 20px;
+    }
+
+    h6 {
+        font-size: 2rem;
+        padding-top: 20px;
+    }
+
+    p.api, a {
+        font-size: 1.3rem;
+    }
+
+    p.api {
+        padding: 0px;
+    }
+
+    footer h5 {
+        font-size: 1.5rem;
+    }
 }
